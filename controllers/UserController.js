@@ -14,6 +14,19 @@ class UserController {
 			};
 		}
 
+		const isUserRegistered = User.findOne({
+			where: {
+				email
+			}
+		})
+
+		if (isUserRegistered?.id) {
+			throw {
+				statusCode: 400,
+				message: "email has been registered",
+			};
+		}
+
 		const salt = await bcrypt.genSalt(10);
 		const passwordHashed = await bcrypt.hash(password, salt);
 
@@ -71,7 +84,10 @@ class UserController {
 		);
 
 		res.json({
-			token,
+			message: "success",
+			data: {
+				token
+			},
 		});
 	}
 

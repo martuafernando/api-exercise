@@ -12,9 +12,9 @@ class PurchaseController {
 			};
 		}
 
-		const product = Product.findByPk(productId);
+		const product = await Product.findByPk(productId);
 
-		if (Object.keys(product).length) {
+		if (!product?.id) {
 			throw {
 				statusCode: 404,
 				message: "productId not found",

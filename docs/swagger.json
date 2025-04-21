@@ -1,0 +1,415 @@
+{
+	"openapi": "3.0.3",
+	"info": {
+		"title": "Rakamin E-Commerce API",
+		"version": "1.0.0",
+		"description": "API documentation converted from Postman collection"
+	},
+	"servers": [
+		{
+			"url": "http://localhost:3000"
+		}
+	],
+	"components": {
+		"securitySchemes": {
+			"bearerAuth": {
+				"type": "http",
+				"scheme": "bearer",
+				"bearerFormat": "JWT"
+			}
+		}
+	},
+	"paths": {
+		"/api/register": {
+			"post": {
+				"summary": "Register a new user",
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/x-www-form-urlencoded": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"name": {
+										"type": "string"
+									},
+									"email": {
+										"type": "string"
+									},
+									"password": {
+										"type": "string"
+									},
+									"role": {
+										"type": "string"
+									}
+								},
+								"required": ["name", "email", "password", "role"]
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "CREATED",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"message": {
+											"type": "string",
+											"description": "message",
+											"example": "account created successfully"
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"message": {
+											"type": "string",
+											"example": "email has been registered"
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/login": {
+			"post": {
+				"summary": "Login a user",
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/x-www-form-urlencoded": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"email": {
+										"type": "string"
+									},
+									"password": {
+										"type": "string"
+									}
+								},
+								"required": ["email", "password"]
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Login successful and returns a token",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"data": {
+											"type": "object",
+											"properties": {
+												"token": {
+													"type": "string"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"message": {
+											"type": "string",
+											"example": "incorrect email or password"
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/purchase": {
+			"post": {
+				"summary": "Purchase a product",
+				"security": [
+					{
+						"bearerAuth": []
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/x-www-form-urlencoded": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"productId": {
+										"type": "integer"
+									}
+								},
+								"required": ["productId"]
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Product purchased",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"message": {
+											"type": "string",
+											"example": "Purchasing successful"
+										}
+									}
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unatuhorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"message": {
+											"type": "string",
+											"example": "Token required"
+										}
+									}
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not Found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"message": {
+											"type": "string",
+											"example": "productId not found"
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/users": {
+			"get": {
+				"summary": "Get users",
+				"security": [
+					{
+						"bearerAuth": []
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "List of users",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"message": {
+											"type": "string",
+											"example": "Success"
+										},
+										"data": {
+											"type": "array",
+											"items": {
+												"type": "object",
+												"properties": {
+													"id": {
+														"type": "integer",
+														"example": 1
+													},
+													"name": {
+														"type": "string",
+														"example": "testing"
+													},
+													"email": {
+														"type": "string",
+														"example": "testing@email.com"
+													},
+													"password": {
+														"type": "string",
+														"example": "$2b$10$PCAQpN3FR2kRd1QGHMt6juDNZmU3Y56tB43xmqwhbjF0zH3aAQghK"
+													},
+													"role": {
+														"type": "string",
+														"example": "user"
+													},
+													"createdAt": {
+														"type": "string",
+														"format": "date-time",
+														"example": "2025-04-21T07:01:30.286Z"
+													},
+													"updatedAt": {
+														"type": "string",
+														"format": "date-time",
+														"example": "2025-04-21T07:01:30.286Z"
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Forbidden",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"message": {
+											"type": "string",
+											"example": "Forbidden"
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/products": {
+			"get": {
+				"summary": "Get products",
+				"security": [
+					{
+						"bearerAuth": []
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "List of products",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"message": {
+											"type": "string",
+											"example": "success"
+										},
+										"data": {
+											"type": "array",
+											"items": {
+												"type": "object",
+												"properties": {
+													"id": {
+														"type": "integer",
+														"example": 2
+													},
+													"name": {
+														"type": "string",
+														"example": "Sabun"
+													},
+													"price": {
+														"type": "integer",
+														"example": 3000
+													},
+													"createdAt": {
+														"type": "string",
+														"format": "date-time",
+														"example": "2025-04-21T09:13:25.230Z"
+													},
+													"updatedAt": {
+														"type": "string",
+														"format": "date-time",
+														"example": "2025-04-21T09:13:25.230Z"
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			},
+			"post": {
+				"summary": "Add a new product",
+				"security": [
+					{
+						"bearerAuth": []
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/x-www-form-urlencoded": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"email": {
+										"type": "string"
+									},
+									"password": {
+										"type": "string"
+									}
+								},
+								"required": ["email", "password"]
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "Product created"
+					},
+          "401": {
+						"description": "Unatuhorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"message": {
+											"type": "string",
+											"example": "Token required"
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
