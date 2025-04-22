@@ -14,13 +14,13 @@ class UserController {
 			};
 		}
 
-		const isUserRegistered = User.findOne({
+		const existingUser = await User.findOne({
 			where: {
 				email
 			}
 		})
 
-		if (isUserRegistered?.id) {
+		if (existingUser?.id) {
 			throw {
 				statusCode: 400,
 				message: "email has been registered",
@@ -45,7 +45,7 @@ class UserController {
 	static async login(req, res, next) {
 		const { email, password } = req.body;
 
-		if (!email || !email) {
+		if (!email || !password) {
 			throw {
 				statusCode: 400,
 				message: "email and password required",
